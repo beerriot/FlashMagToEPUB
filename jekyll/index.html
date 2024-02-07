@@ -1,0 +1,25 @@
+---
+layout: default
+title: Magazine Archive
+---
+<div class="ArchiveTop">
+  <h1>{{archive_title}} Magazine Archive</h1>
+  {% for post in site.posts %}
+  <div class="IssuePreview">
+    <div class="IssueCover">
+      <a href="{{ post.url }}">
+        <img src="{{ post.cover }}" />
+      </a>
+    </div>
+    <div class="IssueDescription">
+      <a href="{{ post.url }}">
+        <p>{{ post.title }}</p>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="SiteDetails">
+    <p>{{ site.extraction }}</p>
+  </div>
+</div>

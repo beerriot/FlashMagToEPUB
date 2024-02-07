@@ -1,0 +1,15 @@
+---
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ "/style.css" | relative_url }}">
+    <title>{{ site.archive_title }}{{ page.title }}</title>
+  </head>
+  <body>
+    {{ content }}
+    {% for script in page.scripts %}
+    <script src="{{ script | relative_url}}" language="javascript"></script>
+    {% endfor %}
+  </body>
+</html>

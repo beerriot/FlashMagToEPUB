@@ -1,0 +1,29 @@
+---
+layout: default
+---
+<div class="IssueBody">
+  <div class="IssueNavigation">
+    {% for p in page.pages %}
+    {% capture page_link %}#page{{ p.number}} {% endcapture %}
+    <div class="IssuePage">
+      <div class="PageImage">
+        <a href="{{ page_link }}">
+          <img src="{{ p.thumbnail }}" />
+        </a>
+      </div>
+      <div class="PageNumber">
+        <a href="{{ page_link }}">{{ p.number }}</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="PageView">
+    <div class="CurrentPageNumber">1</div>
+    <div class="CurrentPageImage">
+      <img src="{{ page.pages.first.image }}" />
+    </div>
+  </div>
+  <div class="IssueDetails">
+    <p>{{ page.extraction }}</p>
+  </div>
+</div>

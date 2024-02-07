@@ -1,0 +1,18 @@
+exclude: ["README.md", "Gemfile", "Gemfile.lock", "Makefile"]
+
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      layout: "default"
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "issue"
+
+domain: raspberrypi.local
+url: https://raspberrypi.local/awcatalog
+timezone: America/Chicago
