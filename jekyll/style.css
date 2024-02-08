@@ -1,0 +1,15 @@
+div.IssueNavigation {
+    position: absolute;
+    overflow: auto;
+    height: 100%;
+}
+
+div.PageView {
+    position: absolute;
+    overflow: auto;
+    height: 100%;
+}
+
+div.CurrentPageImage img {
+    max-width: 100%;
+}
