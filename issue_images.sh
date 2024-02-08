@@ -5,6 +5,8 @@
 # Extracts full-resolution JPEG form Zoom_Page SWF, and copies it to
 # $FULLPAGEDIR/Page_$PAGE.jpg
 
+. config
+
 if (( $# < 3 )); then
     echo "Usage: $0 <in:source dir> <out:thumbs dir> <out:full-res dir>"
     exit -1;
@@ -25,15 +27,22 @@ if [[ ! -d $3 ]]; then
     exit -1;
 fi
 
-THUMBCOUNT=`ls $1/Thumbnail_*.jpg | wc -l | sed -e "s/^[ ]*//"`
-echo "Copying $THUMBCOUNT thumbnails."
-cp $1/Thumbnail_*.jpg "$2"
+THUMBCOUNT=0
+for Thumb in $1/Thumbnail_*.jpg; do
+    BASENAME=$(basename $Thumb)
+    Outfile=${BASENAME/Thumbnail_/${THUMBNAIL_PREFIX}}
+    Outfile=$2/${Outfile/.jpg/${THUMBNAIL_SUFFIX}}
+
+    cp $Thumb $Outfile
+    ((THUMBCOUNT++));
+done
+echo "Copied $THUMBCOUNT thumbnails."
 
 PAGECOUNT=0
 for SWFFile in $1/Zoom_Page_*.swf; do
     BASENAME=$(basename $SWFFile)
-    OutFile=${BASENAME/Zoom_Page_/Page_}
-    OutFile=$3/${OutFile/.swf/.jpg}
+    OutFile=${BASENAME/Zoom_Page_/$IMAGE_PREFIX}
+    OutFile=$3/${OutFile/.swf/$IMAGE_SUFFIX}
 
     swfextract -j 3 -o $OutFile $SWFFile
 

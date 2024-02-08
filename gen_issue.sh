@@ -18,6 +18,8 @@
 #
 # Input: <issue directory> <posts directory>
 
+. config
+
 if (( $# < 2 )); then
     echo "Usage: $0 <issue directory> <posts directory>";
     exit -1
@@ -61,10 +63,12 @@ else
     exit -1;
 fi
 
+ISSUEID=${YEAR}_0${ISSUE}
+
 echo "---
 title: $TITLE
 date: $YEAR-$MONTH_NUM-01 09:00:00Z
-cover: /covers/$YEAR_0$ISSUE.jpg
+cover: /covers/${ISSUEID}.jpg
 pages: " > $OUTFILENAME
 
 VOLDATADIR=$1/${TITLE// /_}
@@ -78,8 +82,8 @@ if [[ -e $DOCTEXTXML ]]; then
     for PAGE in $(seq 1 $TOTALPAGES); do
         PAGETEXT=`sed -n -e "/<page p=\"$PAGE\"/,/page>/p" $DOCTEXTXML | sed -e "s/\<.*page.*\>//" -e "s/^[ ]*/      /"`
         echo "  - number: $PAGE
-    thumbnail: /page_thumbs/${YEAR}_0${ISSUE}/page${PAGE}.jpg
-    image: /page_images/${YEAR}_0${ISSUE}/page${PAGE}.jpg
+    thumbnail: ${THUMBNAIL_BASE_DIR}${ISSUEID}/${THUMBNAIL_PREFIX}${PAGE}${THUMBNAIL_SUFFIX}
+    image: ${IMAGE_BASE_DIR}${ISSUEID}/${IMAGE_PREFIX}${PAGE}${IMAGE_SUFFIX}
     text: |2
 $PAGETEXT" >> $OUTFILENAME
     done
