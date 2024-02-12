@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
   <head>
-    <title>{{ page.title }}</title>
+    <title>{{ page.issue_title }}</title>
     <link href="../css/default.css" rel="stylesheet" type="text/css" />
   </head>
   <body epub:type="frontmatter">
@@ -11,7 +11,7 @@
     <nav epub:type="toc" id="toc">
       <ol>
         <li epub:type="chapter" id="toc-01">
-          <a href="{{ page.pages.first.xhtmlfile }}">Cover</a>
+          <a href="{{ page.pages.first.href }}">Cover</a>
         </li>
         <!-- TODO add page.toc items here //-->
         <li class="about" id="toc-about">
@@ -21,9 +21,9 @@
     </nav>
     <nav epub:type="page-list">
       <ol>
-        {% for page in page.pages %}
+        {% for p in page.pages %}
         <li>
-          <a href="{{ page.xhtmlfile }}">{{ page.number }}</a>
+          <a href="{{ p.href }}">{{ p.number }}</a>
         </li>
         {% endfor %}
         <li>

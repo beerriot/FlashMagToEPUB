@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="ja" prefix="rendition: http://www.idpf.org/vocab/rendition/#"
+      unique-identifier="issue-id">
+      <metadata xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:dcterms="http://purl.org/dc/terms/">
+
+            <dc:identifier id="issue-id">{{ page.issue_id }}</dc:identifier>
+            <dc:title>{{ page.issue_title }}</dc:title>
+            <dc:language>en</dc:language>
+            <meta property="dcterms:modified">{{ site.time }}</meta>
+            <meta property="rendition:layout">pre-paginated</meta>
+            <meta property="rendition:orientation">portrait</meta>
+            <meta property="rendition:spread">landscape</meta>
+      </metadata>
+      <manifest>
+        {% for item in page.files %}
+        <item id="{{ item.id }}" href="{{ item.href }}" media-type="{{ item.type }}"/>
+        {% endfor %}
+      </manifest>
+      <spine toc="ncxtoc" page-progression-direction="ltr">
+        {% assign issuepages = page.files | where: "role", "page" %}
+        {% for item in issuepages %}
+        <itemref idref="{{ item.id }}" properties="page-spread-{% cycle "right", "left" %}" />
+        {% endfor %}
+        <itemref idref="about"  properties="page-spread-right rendition:layout-reflowable"  />
+      </spine>
+</package>

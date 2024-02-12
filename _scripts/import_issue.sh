@@ -93,16 +93,19 @@ mkdir $XHTMLDIR
 ISSUEOPF=$OUTDIR/issue.opf
 echo "---
 layout: epub_opf
+issue_title: $TITLE
 files:" > $ISSUEOPF
 
 TOC=$XHTMLDIR/toc.xhtml
 echo "---
 layout: epub_toc
-title: $TITLE
+issue_title: $TITLE
 date: $YEAR-$MONTH_NUM-01 09:00:00Z
 pages:" > $TOC
 
-echo "  - xhtml/$(basename $TOC)" >> $ISSUEOPF
+echo "  - id: toc
+    href: xhtml/$(basename $TOC)
+    type: application/xhtml+xml" >> $ISSUEOPF
 
 ## TODO actual table-of-contents items
 
@@ -124,10 +127,13 @@ for PAGE in $(seq 1 $TOTALPAGES); do
     if [[ $? -ne 0 ]]; then
         echo "Error extracting JPEG from $SWFFile";
     fi
-    echo "  - $IMGSUB/$(basename $IMGFILE)" >> $ISSUEOPF
+    echo "  - id: i${PAGE}
+    href: $IMGSUB/$(basename $IMGFILE)
+    type: image/jpeg" >> $ISSUEOPF
 
     XHTMLFILE=$XHTMLDIR/page_$PAGE.xhtml
     echo "---
+layout: epub_page
 number: $PAGE
 image: ../$IMGSUB/$(basename $IMGFILE)" > $XHTMLFILE
     if [[ -e $DOCTEXTXML ]]; then
@@ -138,9 +144,12 @@ $PAGETEXT" >> $XHTMLFILE
     echo "---" >> $XHTMLFILE
 
     echo "  - number: $PAGE
-    xhtml: $(basename $XHTMLFILE)" >> $TOC
+    href: $(basename $XHTMLFILE)" >> $TOC
 
-    echo "  - $XHTMLSUB/$(basename $XHTMLFILE)" >> $ISSUEOPF
+    echo "  - id: p$PAGE
+    href: $XHTMLSUB/$(basename $XHTMLFILE)
+    type: application/xhtml+xml
+    role: page" >> $ISSUEOPF
 done
 
 echo "---" >> $TOC
