@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <title>{{ page.title }}</title>
+    <link href="../css/default.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body epub:type="frontmatter">
+    <header>
+      <h1>Table of Contents</h1>
+    </header>
+    <nav epub:type="toc" id="toc">
+      <ol>
+        <li epub:type="chapter" id="toc-01">
+          <a href="{{ page.pages.first.xhtmlfile }}">Cover</a>
+        </li>
+        <!-- TODO add page.toc items here //-->
+        <li class="about" id="toc-about">
+          <a href="about.xhtml">About this document</a>
+        </li>
+      </ol>
+    </nav>
+    <nav epub:type="page-list">
+      <ol>
+        {% for page in page.pages %}
+        <li>
+          <a href="{{ page.xhtmlfile }}">{{ page.number }}</a>
+        </li>
+        {% endfor %}
+        <li>
+          <a href="about.xhtml">About</a>
+        </li>
+      </ol>
+    </nav>
+  </body>
+</html>
