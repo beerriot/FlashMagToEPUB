@@ -6,7 +6,8 @@ Jekyll::Hooks.register :site, :post_write do |site|
   opfs.each { |opf|
     FileUtils.cp_r('_epub_static/.', site.dest + File.dirname(opf.dir))
     Dir.chdir("#{site.dest}#{File.dirname(opf.dir)}") {
-      system("zip -r ../#{File.basename(File.dirname(opf.dir))}.epub .")
+      system("zip -0X ../#{File.basename(File.dirname(opf.dir))}.epub mimetype")
+      system("zip -r ../#{File.basename(File.dirname(opf.dir))}.epub META-INF EPUB")
     }
   }
 end
