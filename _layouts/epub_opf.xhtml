@@ -20,7 +20,7 @@
         <item id="{{ item.id }}" href="{{ item.href }}" media-type="{{ item.type }}"/>
         {% endfor %}
       </manifest>
-      <spine toc="ncxtoc" page-progression-direction="ltr">
+      <spine page-progression-direction="ltr">
         {% assign issuepages = page.files | where: "role", "page" %}
         {% for item in issuepages %}
         <itemref idref="{{ item.id }}" properties="page-spread-{% cycle "right", "left" %}" />
