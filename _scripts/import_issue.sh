@@ -43,6 +43,7 @@ if [[ -z DOCXML ]]; then
     exit -1;
 fi
 TOTALPAGES=`grep pagenum $DOCXML | tail -1 | sed -r -e "s/.*pagenum=\"([0-9]+)\".*/\1/"`
+SOURCEID=`grep docid $DOCXML | cut -d ">" -f 2 | cut -d "<" -f 1`
 
 ISSUEDATADIR=$(dirname $DOCXML)
 echo "Extracting data from issue directory $ISSUEDATADIR"
@@ -94,6 +95,8 @@ ISSUEOPF=$OUTDIR/issue.opf
 echo "---
 layout: epub_opf
 issue_title: $TITLE
+issue_id: $ISSUEID
+source_id: $SOURCEID
 files:" > $ISSUEOPF
 
 TOC=$XHTMLDIR/toc.xhtml
