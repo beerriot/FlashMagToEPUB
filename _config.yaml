@@ -15,4 +15,4 @@ defaults:
 
 domain: raspberrypi.local
 url: https://raspberrypi.local/awcatalog
-timezone: America/Chicago
+timezone: Etc/UTC

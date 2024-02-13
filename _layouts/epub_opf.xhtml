@@ -8,7 +8,7 @@
             <dc:source>{{ page.source_id }}</dc:source>
             <dc:title>{{ page.issue_title }}</dc:title>
             <dc:language>en</dc:language>
-            <meta property="dcterms:modified">{{ site.time }}</meta>
+            <meta property="dcterms:modified">{{ site.time | date: "%FT%TZ" }}</meta>
             <meta property="rendition:layout">pre-paginated</meta>
             <meta property="rendition:orientation">portrait</meta>
             <meta property="rendition:spread">landscape</meta>
