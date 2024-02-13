@@ -9,7 +9,7 @@
 #   .../issue.opf
 #   .../images/page_N.jpeg
 #   .../pages/page_N.xhtml
-#   .../pages/About.xhtml
+#   .../pages/about.xhtml
 #
 # The other OCF container files will be added at site build time.
 
@@ -154,3 +154,10 @@ done
 
 echo "---" >> $TOC
 echo "---" >> $ISSUEOPF
+
+IMPORT_DATE=`date`
+echo "---
+layout: epub_about
+orig_path: $1
+import_date: $IMPORT_DATE
+---" > $XHTMLDIR/about.xhtml

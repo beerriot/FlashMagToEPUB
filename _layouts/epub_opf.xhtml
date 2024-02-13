@@ -14,6 +14,7 @@
       </metadata>
       <manifest>
         <item id="style" href="styles/default.css" media-type="text/css" />
+        <item id="about" href="xhtml/about.xhtml" media-type="application/xhtml+xml" />
         {% for item in page.files %}
         <item id="{{ item.id }}" href="{{ item.href }}" media-type="{{ item.type }}"/>
         {% endfor %}
