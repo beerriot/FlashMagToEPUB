@@ -17,7 +17,7 @@
         <item id="style" href="styles/default.css" media-type="text/css" />
         <item id="about" href="xhtml/about.xhtml" media-type="application/xhtml+xml" />
         {% for item in page.files %}
-        <item id="{{ item.id }}" href="{{ item.href }}" media-type="{{ item.type }}"/>
+        <item id="{{ item.id }}" href="{{ item.href }}" media-type="{{ item.type }}"{% if item.properties %} properties="{{ item.properties }}"{% endif %}/>
         {% endfor %}
       </manifest>
       <spine page-progression-direction="ltr">

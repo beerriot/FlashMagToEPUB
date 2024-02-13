@@ -107,6 +107,7 @@ date: $YEAR-$MONTH_NUM-01 09:00:00Z
 pages:" > $TOC
 
 echo "  - id: toc
+    properties: nav
     href: xhtml/$(basename $TOC)
     type: application/xhtml+xml" >> $ISSUEOPF
 
