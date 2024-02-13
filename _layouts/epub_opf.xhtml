@@ -13,8 +13,8 @@
             <meta property="rendition:spread">landscape</meta>
       </metadata>
       <manifest>
-        {% for item in page.files %}
         <item id="style" href="styles/default.css" media-type="text/css" />
+        {% for item in page.files %}
         <item id="{{ item.id }}" href="{{ item.href }}" media-type="{{ item.type }}"/>
         {% endfor %}
       </manifest>
