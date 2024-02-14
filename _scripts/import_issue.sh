@@ -18,39 +18,37 @@ if (( $# < 1 )); then
     exit -1;
 fi
 
-if [[ -e $1/index.html ]]; then
-    echo  "Converting issue from $1/index.html";
+if [[ -e $1/offlineparams.xml ]]; then
+    REPOSITORY=`xq -r '.offline.param[]|select(.["@pname"] == "repository")|.["#text"]' $1/offlineparams.xml`
+    DOCID=`xq -r '.offline.param[]|select(.["@pname"] == "documents")|.param["#text"]' $1/offlineparams.xml`
+    ISSUEDATADIR=$1/$REPOSITORY$DOCID;
 else
-    echo "Cannot find issue file at $1/index.html";
-    exit -1;
+    ISSUEDATADIR=$1
 fi
 
-TITLE=`grep "<title>" $1/index.html | cut -d ">" -f 2 | cut -d "<" -f 1`
-if [[ -z $TITLE ]]; then
+DOCXML=$ISSUEDATADIR/document.xml
+if [[ ! -e $DOCXML ]]; then
+    echo "Error: document.xml not found in issue data directory $ISSUEDATADIR"
+    exit -1
+fi
+
+if [[ -z DOCID ]]; then
+    DOCID=`xq -r '.DigitalFlipDoc.docid["#text"]' $DOCXML`
+fi
+
+echo "Extracting data from issue directory $ISSUEDATADIR"
+
+ISSUETITLE=`xq -r '.DigitalFlipDoc.title["#text"]' $DOCXML`
+if [[ -z $ISSUETITLE ]]; then
     echo "No title found!"
     exit -1
 fi
 
-VOLUMEDIR=$1/${TITLE// /_}
-if [[ ! -d $VOLUMEDIR ]]; then
-    echo "Cannot find issue data directory $VOLUMEDIR";
-    exit -1;
-fi
+TOTALPAGES=`xq -r '.DigitalFlipDoc.pages.page|length' $DOCXML`
 
-DOCXML=`ls $VOLUMEDIR/*/document.xml`
-if [[ -z DOCXML ]]; then
-    echo "Issue document not found at $VOLUMEDIR/*/document.xml"
-    exit -1;
-fi
-TOTALPAGES=`grep pagenum $DOCXML | tail -1 | sed -r -e "s/.*pagenum=\"([0-9]+)\".*/\1/"`
-SOURCEID=`grep docid $DOCXML | cut -d ">" -f 2 | cut -d "<" -f 1`
-
-ISSUEDATADIR=$(dirname $DOCXML)
-echo "Extracting data from issue directory $ISSUEDATADIR"
-
-YEAR=`echo $TITLE | cut -d " " -f 6`
-MONTH=`echo $TITLE | cut -d " " -f 5`
-ISSUE=`echo $TITLE | cut -d " " -f 4`
+YEAR=`echo $ISSUETITLE | cut -d " " -f 6`
+MONTH=`echo $ISSUETITLE | cut -d " " -f 5`
+ISSUE=`echo $ISSUETITLE | cut -d " " -f 4`
 
 case $MONTH in
     (January) MONTH_NUM=01;;
@@ -94,15 +92,15 @@ mkdir $XHTMLDIR
 ISSUEOPF=$OUTDIR/issue.opf
 echo "---
 layout: epub_opf
-issue_title: $TITLE
+issue_title: $ISSUETITLE
 issue_id: $ISSUEID
-source_id: $SOURCEID
+source_id: $DOCID
 files:" > $ISSUEOPF
 
 TOC=$XHTMLDIR/toc.xhtml
 echo "---
 layout: epub_toc
-issue_title: $TITLE
+issue_title: $ISSUETITLE
 date: $YEAR-$MONTH_NUM-01 09:00:00Z
 pages:" > $TOC
 
@@ -117,8 +115,6 @@ DOCTEXTXML=`ls $ISSUEDATADIR/DocumentText.xml`
 if [[ ! -e $DOCTEXTXML ]]; then
     echo "Warning: Text extraction document not found at $ISSUEDATADIR/DocumentText.xml. No alt-text will be included."
 fi
-
-## Page Images
 
 IMGPREFIX=page_
 IMGSUFFIX=.jpeg
@@ -141,7 +137,10 @@ layout: epub_page
 number: $PAGE
 image: ../$IMGSUB/$(basename $IMGFILE)" > $XHTMLFILE
     if [[ -e $DOCTEXTXML ]]; then
-        PAGETEXT=`sed -n -e "/<page p=\"$PAGE\"/,/page>/p" $DOCTEXTXML | sed -e "s/\<.*page.*\>//" -e "s/^[ ]*/  /"`
+        # could replace the query with an index like
+        #    ".doc.page[$((PAGE - 1))][\"#text\"]"
+        # but it seems to not make a time difference, and this seems less fragile, in case pages without text are omitted?
+        PAGETEXT=`xq -r ".doc.page[]|select(.[\"@p\"] == \"$PAGE\")|.[\"#text\"]" $DOCTEXTXML | sed -e "s/^[ ]*/  /"`
         echo "text: |2
 $PAGETEXT" >> $XHTMLFILE
     fi
