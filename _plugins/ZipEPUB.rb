@@ -6,10 +6,9 @@ require 'fileutils'
 # we get here, so there is no mtime to check.
 
 Jekyll::Hooks.register :site, :post_write do |site|
-  puts "Adding static files and zipping epubs"
+  puts "Zipping epubs"
   opfs = site.pages.filter { |page| page.name == 'issue.opf' }
   opfs.each { |opf|
-    FileUtils.cp_r('_epub_static/.', site.dest + File.dirname(opf.dir))
     Dir.chdir("#{site.dest}#{File.dirname(opf.dir)}") {
       system("zip -0X ../#{File.basename(File.dirname(opf.dir))}.epub mimetype > /dev/null")
       system("zip -r ../#{File.basename(File.dirname(opf.dir))}.epub META-INF EPUB > /dev/null")
