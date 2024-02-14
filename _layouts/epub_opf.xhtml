@@ -6,7 +6,7 @@
 
             <dc:identifier id="issue-id">{{ site.magazine_title }}{{ page.issue_id }}</dc:identifier>
             <dc:source>{{ page.source_id }}</dc:source>
-            <dc:title>{{ page.issue_title }}</dc:title>
+            <dc:title>{{ page.issue_title }}, {{ site.magazine_title }}</dc:title>
             <dc:language>en</dc:language>
             <meta property="dcterms:modified">{{ site.time | date: "%FT%TZ" }}</meta>
             <meta property="rendition:layout">pre-paginated</meta>
