@@ -1,5 +1,6 @@
 exclude: ["README.md", "Gemfile", "Gemfile.lock", "Makefile"]
 
+magazine_title: American Woodworker
 defaults:
   -
     scope:
