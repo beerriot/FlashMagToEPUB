@@ -159,6 +159,9 @@ $PAGETEXT" >> $XHTMLFILE
     role: page" >> $ISSUEOPF
 done
 
+echo "toc:" >> $TOC
+xq -r '.DigitalFlipDoc.customtoc.content[]|"  - label: \(.["@label"])\n    page: \(.["@gotopage"])"' $DOCXML >> $TOC
+
 echo "---" >> $TOC
 echo "---" >> $ISSUEOPF
 
