@@ -131,6 +131,10 @@ for PAGE in $(seq 1 $TOTALPAGES); do
     href: $IMGSUB/$(basename $IMGFILE)
     type: image/jpeg" >> $ISSUEOPF
 
+    if [[ $PAGE == 1 ]]; then
+        echo "    properties: cover-image" >> $ISSUEOPF
+    fi
+
     XHTMLFILE=$XHTMLDIR/page_$PAGE.xhtml
     echo "---
 layout: epub_page
