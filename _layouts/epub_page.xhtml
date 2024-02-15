@@ -4,7 +4,7 @@
     xml:lang="ja">
     <head>
         <title>Page {{ page.number }}</title>
-        <meta name="viewport" content="width=1498, height=2054"/>
+        <meta name="viewport" content="{{ page.image_size }}"/>
     </head>
     <body epub:type="bodymatter">
         <img src="{{ page.image }}" alt="{{ page.text | escape_once }}"/>

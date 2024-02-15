@@ -135,11 +135,14 @@ for PAGE in $(seq 1 $TOTALPAGES); do
         echo "    properties: cover-image" >> $ISSUEOPF
     fi
 
+    IMGSIZE=`identify -format "width=%w, height=%h\n" $IMGFILE`
+
     XHTMLFILE=$XHTMLDIR/page_$PAGE.xhtml
     echo "---
 layout: epub_page
 number: $PAGE
-image: ../$IMGSUB/$(basename $IMGFILE)" > $XHTMLFILE
+image: ../$IMGSUB/$(basename $IMGFILE)
+image_size: $IMGSIZE" > $XHTMLFILE
     if [[ -e $DOCTEXTXML ]]; then
         # could replace the query with an index like
         #    ".doc.page[$((PAGE - 1))][\"#text\"]"
