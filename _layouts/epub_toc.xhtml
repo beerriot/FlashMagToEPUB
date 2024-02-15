@@ -13,7 +13,8 @@
         <li epub:type="chapter" id="toc-01">
           <a href="{{ page.pages.first.href }}">Cover</a>
         </li>
-        {% for t in page.toc %}
+        {% assign sorted_toc = page.toc | sort: "page" %}
+        {% for t in sorted_toc %}
         <li epub:type="chapter">
           {% assign tpage = t.page | minus: 1 -%}
           <a href="{{ page.pages[tpage].href }}">{{ t.label | escape_once }}</a>
