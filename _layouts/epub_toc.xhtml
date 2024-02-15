@@ -16,7 +16,7 @@
         {% for t in page.toc %}
         <li epub:type="chapter" id="toc-p{{ t.page }}">
           {% assign tpage = t.page | minus: 1 -%}
-          <a href="{{ page.pages[tpage].href }}">{{ t.label }}</a>
+          <a href="{{ page.pages[tpage].href }}">{{ t.label | escape_once }}</a>
         </li>
         {% endfor %}
         <!-- TODO add page.toc items here //-->
