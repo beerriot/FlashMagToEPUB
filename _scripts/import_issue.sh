@@ -32,19 +32,29 @@ if [[ ! -e $DOCXML ]]; then
     exit -1
 fi
 
+TMPDOCXML=`mktemp -t import_doc_xml`
+if [[ $? == 0 ]]; then
+    # American Woodworker sometimes uses ampersand without escaping it
+    sed -e 's/& /\&amp; /g' $DOCXML > $TMPDOCXML
+else
+    # If we can't do the substitution, try to keep going, in case we
+    # didn't need to do it anyway
+    TMPDOCXML=$DOCXML
+fi
+
 if [[ -z DOCID ]]; then
-    DOCID=`xq -r '.DigitalFlipDoc.docid["#text"]' $DOCXML`
+    DOCID=`xq -r '.DigitalFlipDoc.docid["#text"]' $TMPDOCXML`
 fi
 
 echo "Extracting data from issue directory $ISSUEDATADIR"
 
-ISSUETITLE=`xq -r '.DigitalFlipDoc.title["#text"]' $DOCXML`
+ISSUETITLE=`xq -r '.DigitalFlipDoc.title["#text"]' $TMPDOCXML`
 if [[ -z $ISSUETITLE ]]; then
     echo "No title found!"
     exit -1
 fi
 
-TOTALPAGES=`xq -r '.DigitalFlipDoc.pages.page|length' $DOCXML`
+TOTALPAGES=`xq -r '.DigitalFlipDoc.pages.page|length' $TMPDOCXML`
 
 YEAR=`echo $ISSUETITLE | cut -d " " -f 6`
 MONTH=`echo $ISSUETITLE | cut -d " " -f 5`
@@ -163,7 +173,7 @@ $PAGETEXT" >> $XHTMLFILE
 done
 
 echo "toc:" >> $TOC
-xq -r '.DigitalFlipDoc.customtoc.content[]|"  - label: \(.["@label"])\n    page: \(.["@gotopage"])"' $DOCXML >> $TOC
+xq -r '.DigitalFlipDoc.customtoc.content[]|"  - label: \(.["@label"])\n    page: \(.["@gotopage"])"' $TMPDOCXML >> $TOC
 
 echo "---" >> $TOC
 echo "---" >> $ISSUEOPF
@@ -174,3 +184,8 @@ layout: epub_about
 orig_path: $1
 import_date: $IMPORT_DATE
 ---" > $XHTMLDIR/about.xhtml
+
+# Not strictly necessary, but clean up temp files, if possible
+if [[ $TMPDOCXML != $DOCXML ]]; then
+    rm $TMPDOCXML
+fi
