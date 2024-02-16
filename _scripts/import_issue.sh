@@ -90,7 +90,13 @@ case $MONTH in
     (October) MONTH_NUM=10;;
     (November) MONTH_NUM=11;;
     (December) MONTH_NUM=12;;
-    (*) MONTH_NUM=UU;; # This will cause an error at render time
+
+    (Spring) MONTH_NUM=03;;
+    (Summer) MONTH_NUM=06;;
+    (Fall) MONTH_NUM=09;;
+    (Winter) MONTH_NUM=12;;
+
+    (*) MONTH_NUM=UU;; # This is somewhat easy to find later
 esac
 
 if [[ -z $YEAR || -z $ISSUE ]]; then
