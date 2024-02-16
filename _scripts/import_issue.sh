@@ -47,8 +47,12 @@ echo "Extracting data from issue directory $ISSUEDATADIR"
 # processing.
 TMPDOCXML=`mktemp -t import_doc_xml`
 if [[ $? == 0 ]]; then
-    # American Woodworker sometimes uses ampersand without escaping it
-    sed -e 's/& /\&amp; /g' "$DOCXML" > $TMPDOCXML
+    # American Woodworker sometimes...
+    #    ... uses ampersand without escaping it (& -> &amp;)
+    #    ... or embeds a comment within a comment (<!--<!----> -> <!--)
+    sed -e 's/& /\&amp; /g' \
+        -e 's/<!--<!---->/<!--/' \
+        "$DOCXML" > $TMPDOCXML
 else
     # If we can't do the substitution, try to keep going, in case we
     # didn't need to do it anyway
