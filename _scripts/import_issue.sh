@@ -18,16 +18,16 @@ if (( $# < 1 )); then
     exit -1;
 fi
 
-if [[ -e $1/offlineparams.xml ]]; then
-    REPOSITORY=`xq -r '.offline.param[]|select(.["@pname"] == "repository")|.["#text"]' $1/offlineparams.xml`
-    DOCID=`xq -r '.offline.param[]|select(.["@pname"] == "documents")|.param["#text"]' $1/offlineparams.xml`
-    ISSUEDATADIR=$1/$REPOSITORY$DOCID;
+if [[ -e "$1/offlineparams.xml" ]]; then
+    REPOSITORY=`xq -r '.offline.param[]|select(.["@pname"] == "repository")|.["#text"]' "$1/offlineparams.xml"`
+    DOCID=`xq -r '.offline.param[]|select(.["@pname"] == "documents")|.param["#text"]' "$1/offlineparams.xml"`
+    ISSUEDATADIR="$1/$REPOSITORY$DOCID";
 else
-    ISSUEDATADIR=$1
+    ISSUEDATADIR="$1"
 fi
 
 DOCXML=$ISSUEDATADIR/document.xml
-if [[ ! -e $DOCXML ]]; then
+if [[ ! -e "$DOCXML" ]]; then
     echo "Error: document.xml not found in issue data directory $ISSUEDATADIR"
     exit -1
 fi
@@ -35,7 +35,7 @@ fi
 TMPDOCXML=`mktemp -t import_doc_xml`
 if [[ $? == 0 ]]; then
     # American Woodworker sometimes uses ampersand without escaping it
-    sed -e 's/& /\&amp; /g' $DOCXML > $TMPDOCXML
+    sed -e 's/& /\&amp; /g' "$DOCXML" > $TMPDOCXML
 else
     # If we can't do the substitution, try to keep going, in case we
     # didn't need to do it anyway
@@ -43,18 +43,18 @@ else
 fi
 
 if [[ -z DOCID ]]; then
-    DOCID=`xq -r '.DigitalFlipDoc.docid["#text"]' $TMPDOCXML`
+    DOCID=`xq -r '.DigitalFlipDoc.docid["#text"]' "$TMPDOCXML"`
 fi
 
 echo "Extracting data from issue directory $ISSUEDATADIR"
 
-ISSUETITLE=`xq -r '.DigitalFlipDoc.title["#text"]' $TMPDOCXML`
+ISSUETITLE=`xq -r '.DigitalFlipDoc.title["#text"]' "$TMPDOCXML"`
 if [[ -z $ISSUETITLE ]]; then
     echo "No title found!"
     exit -1
 fi
 
-TOTALPAGES=`xq -r '.DigitalFlipDoc.pages.page|length' $TMPDOCXML`
+TOTALPAGES=`xq -r '.DigitalFlipDoc.pages.page|length' "$TMPDOCXML"`
 
 YEAR=`echo $ISSUETITLE | cut -d " " -f 6`
 MONTH=`echo $ISSUETITLE | cut -d " " -f 5`
@@ -121,8 +121,8 @@ echo "  - id: toc
 
 ## TODO actual table-of-contents items
 
-DOCTEXTXML=`ls $ISSUEDATADIR/DocumentText.xml`
-if [[ ! -e $DOCTEXTXML ]]; then
+DOCTEXTXML=$ISSUEDATADIR/DocumentText.xml
+if [[ ! -e "$DOCTEXTXML" ]]; then
     echo "Warning: Text extraction document not found at $ISSUEDATADIR/DocumentText.xml. No alt-text will be included."
 fi
 
@@ -133,7 +133,7 @@ for PAGE in $(seq 1 $TOTALPAGES); do
     SWFFILE=$ISSUEDATADIR/Zoom_Page_$PAGE.swf
     IMGFILE=$IMGDIR/$IMGPREFIX$PAGE$IMGSUFFIX
 
-    swfextract -j 3 -o $IMGFILE $SWFFILE
+    swfextract -j 3 -o $IMGFILE "$SWFFILE"
     if [[ $? -ne 0 ]]; then
         echo "Error extracting JPEG from $SWFFile";
     fi
@@ -153,11 +153,11 @@ layout: epub_page
 number: $PAGE
 image: ../$IMGSUB/$(basename $IMGFILE)
 image_size: $IMGSIZE" > $XHTMLFILE
-    if [[ -e $DOCTEXTXML ]]; then
+    if [[ -e "$DOCTEXTXML" ]]; then
         # could replace the query with an index like
         #    ".doc.page[$((PAGE - 1))][\"#text\"]"
         # but it seems to not make a time difference, and this seems less fragile, in case pages without text are omitted?
-        PAGETEXT=`xq -r ".doc.page[]|select(.[\"@p\"] == \"$PAGE\")|.[\"#text\"]" $DOCTEXTXML | sed -e "s/^[ ]*/  /"`
+        PAGETEXT=`xq -r ".doc.page[]|select(.[\"@p\"] == \"$PAGE\")|.[\"#text\"]" "$DOCTEXTXML" | sed -e "s/^[ ]*/  /"`
         echo "text: |2
 $PAGETEXT" >> $XHTMLFILE
     fi
@@ -173,7 +173,7 @@ $PAGETEXT" >> $XHTMLFILE
 done
 
 echo "toc:" >> $TOC
-xq -r '.DigitalFlipDoc.customtoc.content[]|"  - label: \(.["@label"])\n    page: \(.["@gotopage"])"' $TMPDOCXML >> $TOC
+xq -r '.DigitalFlipDoc.customtoc.content[]|"  - label: \(.["@label"])\n    page: \(.["@gotopage"])"' "$TMPDOCXML" >> $TOC
 
 echo "---" >> $TOC
 echo "---" >> $ISSUEOPF
@@ -186,6 +186,6 @@ import_date: $IMPORT_DATE
 ---" > $XHTMLDIR/about.xhtml
 
 # Not strictly necessary, but clean up temp files, if possible
-if [[ $TMPDOCXML != $DOCXML ]]; then
+if [[ "$TMPDOCXML" != "$DOCXML" ]]; then
     rm $TMPDOCXML
 fi
