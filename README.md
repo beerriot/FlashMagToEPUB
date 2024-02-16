@@ -212,8 +212,9 @@ pixels. That's only a tiny bit smaller than the number of pixels on an
 iPad screen. Much more appropriate.
 
 Luckily, the SWFTools package provides tools to extract items from
-Flash files, and it seems that every `Zoom_Page` has exactly one JPEG,
-at id 3.
+Flash files. Most `Zoom_Page` files have exactly one JPEG, at id 3,
+but the import script does a little extra work to handle those that
+don't.
 
 ```
 % swfextract Vol_1_No_1_March_1985/1a222c8d671141e4a0867f568dacee3c/Zoom_Page_61.swf

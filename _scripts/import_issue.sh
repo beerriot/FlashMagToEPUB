@@ -157,10 +157,15 @@ for PAGE in $(seq 1 $TOTALPAGES); do
     # Where we save the image to
     IMGFILE=$IMGDIR/page_$PAGE.jpeg
 
-    # The image is always ID 3 in the American Woodworker files
-    swfextract -j 3 -o $IMGFILE "$SWFFILE"
-    if [[ $? -ne 0 ]]; then
-        echo "Error extracting JPEG from $SWFFile";
+    # Find the ID of the larges JPEG in the file
+    JPEGIDX=`swfdump "$SWFFILE" | grep DEFINEBITSJPEG | sort -n -k 2 | tail -n -1 | egrep -o "[0-9]*$"`
+    if [[ -z $JPEGIDX ]]; then
+        echo "Error: could not find JPEG in $SWFFILE";
+    else
+        swfextract -j $JPEGIDX -o $IMGFILE "$SWFFILE"
+        if [[ $? -ne 0 ]]; then
+            echo "Error extracting JPEG from $SWFFile";
+        fi
     fi
     echo "  - id: i${PAGE}
     href: $IMGSUB/$(basename $IMGFILE)
