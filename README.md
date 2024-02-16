@@ -301,6 +301,18 @@ why the build instructions in the first section of this readme suggest
 `--disable-disk-cache`. That brings the total back down to "only"
 three copies, at and estimated 13.5GB.
 
+### Validation
+
+After the EPUBs are built validating them before trying to import them
+into a reader app can help avoid making a mess of your
+library. [EPUBCheck](https://github.com/w3c/epubcheck) has been a
+useful tool for me:
+
+```
+for p in _site/issues/*.epub; do
+  java -jar ~/Downloads/epubcheck-5.1.0/epubcheck.jar $p;
+done
+```
 
 ## Other Back Catalogs
 
