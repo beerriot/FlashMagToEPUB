@@ -52,10 +52,10 @@ first issue:
 
 `_scripts/import_issue.sh /Volumes/American\ Woodworker\ -\ Disc1/disc1/issues/1985/1985_01/`
 
-4. All information and page images are now in the `issues/1985_01`
+4. All information and page images are now in the `issues/1985_1`
    folder under your current directory. Feel free to stop here, and
    just look through the images you'll find in
-   `issues/1985_01/EPUB/images/`. If you don't need EPUBs, just repeat
+   `issues/1985_1/EPUB/images/`. If you don't need EPUBs, just repeat
    step 3 with each issue directory on the DVD. Images for the other
    issues will be plaed in `issues/[YEAR]_[INDEX]` directories here.
 
@@ -256,9 +256,9 @@ the string `layout:`. The name after that refers to a file in the
 `_layouts/` directory. The data in the issue file is templated into
 the layout file, and the result is written into the `_site/`
 subdirectory at an equivalent path
-(e.g. `issues/1985_01/EPUB/issue.opf` is templated with
+(e.g. `issues/1985_1/EPUB/issue.opf` is templated with
 `_layouts/epub_opf.xhtml` and written to
-`_sites/issues/1985_01/EPUB/issue.opf`).
+`_sites/issues/1985_1/EPUB/issue.opf`).
 
 ### Static files
 
