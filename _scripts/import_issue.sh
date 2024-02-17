@@ -73,7 +73,7 @@ fi
 
 # Issue title has the form "Vol 1 No 1 March 1985"
 # splitting by spaces:      1   2 3  4 5     6
-YEAR=`echo $ISSUETITLE | cut -d " " -f 6`
+YEAR=`echo $ISSUETITLE | egrep -o '[0-9]{4}$'`
 MONTH=`echo $ISSUETITLE | cut -d " " -f 5`
 ISSUE=`echo $ISSUETITLE | cut -d " " -f 4`
 
