@@ -71,15 +71,24 @@ if [[ -z $ISSUETITLE ]]; then
     exit -1
 fi
 
-# Issue title has the form "Vol 1 No 1 March 1985"
-# splitting by spaces:      1   2 3  4 5     6
-YEAR=`echo $ISSUETITLE | egrep -o '[0-9]{4}$'`
-MONTH=`echo $ISSUETITLE | cut -d " " -f 5`
-ISSUE=`echo $ISSUETITLE | cut -d " " -f 4`
+# Issue title has one of the forms:
+#   "Vol 1 No 1 March 1985"
+#   "Vol 2 No 1 Spring 1986"
+#   "Vol 4 No 1 March-April 1988"
+#   "Vol 4 No 3 July-August1988" (note missing space)
+#   "No 12 February 1990"
+if [[ $ISSUETITLE =~ "No "([0-9]+)" "([-a-zA-Z]+)" "?([0-9]{4}) ]]; then
+    ISSUE=${BASH_REMATCH[1]}
+    MONTH=${BASH_REMATCH[2]}
+    YEAR=${BASH_REMATCH[3]}
+else
+    echo "Error: unable to parse issue/month/year from title '$ISSUETITLE'"
+    exit -1
+fi
 
 case $MONTH in
     (January*) MONTH_NUM=01;;
-    (Feburary*) MONTH_NUM=02;;
+    (February*) MONTH_NUM=02;;
     (March*) MONTH_NUM=03;;
     (April*) MONTH_NUM=04;;
     (May*) MONTH_NUM=05;;
@@ -96,13 +105,10 @@ case $MONTH in
     (Fall) MONTH_NUM=09;;
     (Winter) MONTH_NUM=12;;
 
-    (*) MONTH_NUM=UU;; # This is somewhat easy to find later
+    (*) echo "Error: Unable to determine month number for '$MONTH'"
+        exit -1;;
 esac
 
-if [[ -z $YEAR || -z $ISSUE ]]; then
-    echo "Unable to extract YEAR and/or ISSUE from issue title $ISSUETITLE"
-    exit -1
-fi
 ISSUEID=${YEAR}_${ISSUE}
 
 OUTDIR=issues/$ISSUEID/EPUB
