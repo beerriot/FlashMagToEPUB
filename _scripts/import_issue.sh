@@ -210,7 +210,7 @@ done
 
 # Add all table-of-contents items
 echo "toc:" >> $TOC
-xq -r '.DigitalFlipDoc.customtoc.content[]|"  - label: \(.["@label"])\n    page: \(.["@gotopage"])"' "$TMPDOCXML" >> $TOC
+xq -r '.DigitalFlipDoc.customtoc.content[]|"  - label: \"\(.["@label"])\"\n    page: \(.["@gotopage"])"' "$TMPDOCXML" >> $TOC
 
 # done adding items to TOC and OPF
 echo "---" >> $TOC
