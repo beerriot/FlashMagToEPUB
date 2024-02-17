@@ -77,10 +77,17 @@ fi
 #   "Vol 4 No 1 March-April 1988"
 #   "Vol 4 No 3 July-August1988" (note missing space)
 #   "No 12 February 1990"
+#   "No 41 1995 Tool Buyers Guide"
 if [[ $ISSUETITLE =~ "No "([0-9]+)" "([-a-zA-Z]+)" "?([0-9]{4}) ]]; then
     ISSUE=${BASH_REMATCH[1]}
     MONTH=${BASH_REMATCH[2]}
     YEAR=${BASH_REMATCH[3]}
+elif [[ $ISSUETITLE =~ "No "([0-9]+)" "([0-9]{4})" Tool Buyers Guide" ]]; then
+    ISSUE=${BASH_REMATCH[1]}
+    # -1 because the guide is named for the coming year
+    YEAR=$((${BASH_REMATCH[2]} - 1))
+    # November because the guide is aimed at seasonal gifting
+    MONTH=November
 else
     echo "Error: unable to parse issue/month/year from title '$ISSUETITLE'"
     exit -1
