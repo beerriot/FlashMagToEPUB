@@ -50,7 +50,7 @@ if [[ $? == 0 ]]; then
     # American Woodworker sometimes...
     #    ... uses ampersand without escaping it (& -> &amp;)
     #    ... or embeds a comment within a comment (<!--<!----> -> <!--)
-    sed -e 's/& /\&amp; /g' \
+    sed -e 's/&/\&amp;/g' \
         -e 's/<!--<!---->/<!--/' \
         "$DOCXML" > $TMPDOCXML
 else
