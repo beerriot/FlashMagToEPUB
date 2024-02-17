@@ -78,18 +78,18 @@ MONTH=`echo $ISSUETITLE | cut -d " " -f 5`
 ISSUE=`echo $ISSUETITLE | cut -d " " -f 4`
 
 case $MONTH in
-    (January) MONTH_NUM=01;;
-    (Feburary) MONTH_NUM=02;;
-    (March) MONTH_NUM=03;;
-    (April) MONTH_NUM=04;;
-    (May) MONTH_NUM=05;;
-    (June) MONTH_NUM=06;;
-    (July) MONTH_NUM=07;;
-    (August) MONTH_NUM=08;;
-    (September) MONTH_NUM=09;;
-    (October) MONTH_NUM=10;;
-    (November) MONTH_NUM=11;;
-    (December) MONTH_NUM=12;;
+    (January*) MONTH_NUM=01;;
+    (Feburary*) MONTH_NUM=02;;
+    (March*) MONTH_NUM=03;;
+    (April*) MONTH_NUM=04;;
+    (May*) MONTH_NUM=05;;
+    (June*) MONTH_NUM=06;;
+    (July*) MONTH_NUM=07;;
+    (August*) MONTH_NUM=08;;
+    (September*) MONTH_NUM=09;;
+    (October*) MONTH_NUM=10;;
+    (November*) MONTH_NUM=11;;
+    (December*) MONTH_NUM=12;;
 
     (Spring) MONTH_NUM=03;;
     (Summer) MONTH_NUM=06;;
