@@ -91,11 +91,13 @@ fi
 #   "Vol 4 No 3 July-August1988" (note missing space)
 #   "No 12 February 1990"
 #   "No 41 1995 Tool Buyers Guide"
+#   "No 83 Tool Buyers Guide 2001"
 if [[ $ISSUETITLE =~ "No "([0-9]+)" "([-a-zA-Z]+)" "?([0-9]{4}) ]]; then
     ISSUE=${BASH_REMATCH[1]}
     MONTH=${BASH_REMATCH[2]}
     YEAR=${BASH_REMATCH[3]}
-elif [[ $ISSUETITLE =~ "No "([0-9]+)" "([0-9]{4})" Tool Buyers Guide" ]]; then
+elif [[ $ISSUETITLE =~ "No "([0-9]+)" "([0-9]{4})" Tool Buyers Guide" ||
+        $ISSUETITLE =~ "No "([0-9]+)" Tool Buyers Guide "([0-9]{4}) ]]; then
     ISSUE=${BASH_REMATCH[1]}
     # -1 because the guide is named for the coming year
     YEAR=$((${BASH_REMATCH[2]} - 1))
