@@ -47,12 +47,25 @@ echo "Extracting data from issue directory $ISSUEDATADIR"
 # processing.
 TMPDOCXML=`mktemp -t import_doc_xml`
 if [[ $? == 0 ]]; then
+    if [[ `echo -e '\xef\xbb\xbf'` == `head -c 3 "$DOCXML"` ]]; then
+        # Most? All? American Woodworker document.xml files have UTF-8
+        # encoded byte-order-marks. They also appear to use
+        # "macintosh" character encoding (1994_07 includes a 0xD1
+        # character that should be an en-dash). We have to skip the
+        # BOM before fixing the encoding.
+        tail -c +4 "$DOCXML" | iconv -f MAC -t UTF-8 > $TMPDOCXML
+    else
+        # Not fixing the encoding if the BOM isn't present, until I
+        # have proof that I should.
+        cp "$DOCXML" $TMPDOCXML
+    fi
+
     # American Woodworker sometimes...
     #    ... uses ampersand without escaping it (& -> &amp;)
     #    ... or embeds a comment within a comment (<!--<!----> -> <!--)
     sed -e 's/&/\&amp;/g' \
         -e 's/<!--<!---->/<!--/' \
-        "$DOCXML" > $TMPDOCXML
+        -i .sed $TMPDOCXML
 else
     # If we can't do the substitution, try to keep going, in case we
     # didn't need to do it anyway
@@ -240,4 +253,7 @@ import_date: $IMPORT_DATE
 # Not strictly necessary, but clean up temp files, if possible
 if [[ "$TMPDOCXML" != "$DOCXML" ]]; then
     rm $TMPDOCXML
+    if [[ -e $TMPDOCXML.sed ]]; then
+        rm $TMPDOCXML.sed
+    fi
 fi
