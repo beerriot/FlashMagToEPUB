@@ -156,6 +156,7 @@ layout: epub_opf
 issue_title: $ISSUETITLE
 issue_id: $ISSUEID
 source_id: $DOCID
+publication_date: $YEAR-$MONTH_NUM-01 09:00:00Z
 files:" > $ISSUEOPF
 # the list of files is added by ">> $ISSUEOPF" commands below
 
@@ -163,7 +164,6 @@ TOC=$XHTMLDIR/toc.xhtml
 echo "---
 layout: epub_toc
 issue_title: $ISSUETITLE
-date: $YEAR-$MONTH_NUM-01 09:00:00Z
 pages:" > $TOC
 # the list of pages is added by ">> $TOC" commands below
 

@@ -5,10 +5,12 @@
             xmlns:dcterms="http://purl.org/dc/terms/">
 
             <dc:identifier id="issue-id">{{ site.magazine_title }}{{ page.issue_id }}</dc:identifier>
-            <dc:source>{{ page.source_id }}</dc:source>
+            <dc:source id="issue-source">{{ page.source_id }}</dc:source>
             <dc:title>{{ page.issue_title }}, {{ site.magazine_title }}</dc:title>
             <dc:language>en</dc:language>
             <meta property="dcterms:modified">{{ site.time | date: "%FT%TZ" }}</meta>
+            <meta refines="#issue-source" property="dcterms:issued">{{ page.publication_date | date: "%Y-%m" }}</meta>
+
             <meta property="rendition:layout">pre-paginated</meta>
             <meta property="rendition:orientation">portrait</meta>
             <meta property="rendition:spread">landscape</meta>
