@@ -71,7 +71,7 @@ first issue:
 If you know you want to create EPUBs for every issue on both DVDs,
 some advice and warnings:
 
-1. Warning: you will need approximately 14GB of free space to import
+1. Warning: you will need approximately 18.5GB of free space to import
    and generate all issues at once.
 2. Advice: if you don't import and generate all issues at once, delete
    the imported issue data *after* you have copied the EPUBs to your
@@ -297,12 +297,12 @@ re-zipping. That's a fourth copy, but Jekyll will also copy everything
 into a `.jekyll-metadata` file when using `--incremental`, so that's
 five total copies!
 
-Five copies of every image. Each issue has around 30MB of
-images. There are about 150 issues. 30MB * 150 * 5 = 22.5GB. This is
-why the build instructions in the first section of this readme suggest
-*not* using `--incremental` and also specifying
-`--disable-disk-cache`. That brings the total back down to "only"
-three copies, at and estimated 13.5GB.
+Five copies of every image. Each issue has 20MB to 50MB of images
+(averaging just under 40MB/issue). There are nearly 160 issues. 40MB *
+160 * 5 = 32GB. This is why the build instructions in the first
+section of this readme suggest *not* using `--incremental` and also
+specifying `--disable-disk-cache`. That brings the total back down to
+"only" three copies, at an estimated 19GB.
 
 ### Validation
 
