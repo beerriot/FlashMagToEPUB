@@ -80,7 +80,9 @@ some advice and warnings:
    again along with the new issue generation (not consuming any
    additional disk space, but wasting time).
 
-To import all issues at once, the following `bash` snippet will work:
+To import all issues at once, the following `bash` snippet will work
+(replace the "1" after Disc1 and disc1 with "2" to import everything
+on the second disc):
 
 ```
 for i in /Volumes/American\ Woodworker\ -\ Disc1/disc1/issues/*/*; do
