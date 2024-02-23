@@ -5,15 +5,15 @@ Woodworker magazine back catalog from its Flash-player viewer to EPUB
 documents. I can't (legally) share that catalog's content with you,
 but I can share this tool to help you regain access to that content if
 you own a copy but, like the rest of us, no longer have a Flash player
-installed. See the [[ExtractingAmericanWoodworkerDVDs]] section for
-instructions.
+installed. See the [Extracting American Woodworker
+DVDs](#extracting-american-woodworker-dvds) section for instructions.
 
 Other people who might find this repo interesting are:
 
 * People with DVDs holding other magazine back catalogs. See
-  [[FlashContentStructure]].
+  [Flash Content Structure](#flash-content-structure).
 * People curious about EPUB creation or Jekyll site building. See
-  [[EPUBAndJekyl]].
+  [EPUB And Jekyll](#epub-and-jekyll).
 
 ## Extracting American Woodworker DVDs
 
