@@ -38,11 +38,11 @@ first issue:
 
 1. Copy this repository to your computer.
 
-`git clone https://github.com/beerriot/TODO`
+`git clone https://github.com/beerriot/FlashMagToEPUB`
 
 2. Change into the repo's root directory.
 
-`cd TODO`
+`cd FlashMagToEPUB`
 
 3. Run the import script to extract information from the Flash content
    and prepare it for further processing. On my Mac, the DVD shows up
